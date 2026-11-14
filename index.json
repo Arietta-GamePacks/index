@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "id": "arknights-endfield",
+      "names": {
+        "zh-Hans": "明日方舟：终末地",
+        "zh-Hant": "明日方舟：終末地",
+        "en": "Arknights: Endfield",
+        "ja": "アークナイツ：エンドフィールド",
+        "ko": "명일방주: 엔드필드"
+      },
+      "author": "PaperKito",
+      "publicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEusHnM9Pd0y8Vp+91s0jJjVuHVmi7zU1Ni75Lj+soul6IMJ9/1EN7ng7F1EHU4jEoWo2rxUKEnjFcRI8DbgVYcQ==",
+      "version": "1.0.0",
+      "api": 1,
+      "capabilities": {
+        "launch": true,
+        "gacha": true,
+        "settings": true,
+        "update": false,
+        "accounts": false
+      },
+      "repo": "https://github.com/Arietta-GamePacks/Arknights-Endfield",
+      "download": "https://github.com/Arietta-GamePacks/Arknights-Endfield/releases/download/v1.0.0/arknights-endfield-1.0.0.zip",
+      "sha256": "a5f1e5781f3386119a396168994ca8c831cebb7922865ed7643f6b1df37f0d77"
+    }
+  ]
+}
