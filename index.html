@@ -1,82 +1,266 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Arietta · 游戏包索引</title>
+<title>Arietta · Game Packs</title>
+<meta name="description" content="Browse and download game packs for Arietta, the third-party launcher.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5be0'/%3E%3Ctext x='32' y='44' font-family='Segoe UI,sans-serif' font-size='36' font-weight='700' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <style>
-  :root { color-scheme: dark; }
+  :root {
+    color-scheme: dark;
+    --bg: #0e0e12;
+    --card: #1a1a21;
+    --card-hover: #1f1f27;
+    --border: #2b2b34;
+    --accent: #5b5be0;
+    --accent-soft: rgba(91, 91, 224, .14);
+    --text: #ececf0;
+    --muted: #9a9aa4;
+    --faint: #6c6c76;
+  }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 48px 16px; background: #101014; color: #e8e8ea;
-    font: 14px/1.6 "Segoe UI", system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    margin: 0; padding: 56px 20px 40px; background: var(--bg); color: var(--text);
+    font: 14px/1.6 "Segoe UI", system-ui, -apple-system, "Microsoft YaHei", "PingFang SC", "Malgun Gothic", sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  header h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: .5px; }
-  header h1 span { color: #7f7ffa; }
-  header p { margin: 0 0 32px; color: #9a9aa2; font-size: 13px; }
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  /* header */
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+  .logo {
+    width: 44px; height: 44px; border-radius: 12px; flex: none;
+    background: linear-gradient(135deg, #5b5be0, #8a5be0);
+    display: grid; place-items: center;
+    font-size: 22px; font-weight: 700; color: #fff;
+  }
+  header h1 { font-size: 24px; margin: 0; letter-spacing: .3px; }
+  header h1 small { color: var(--muted); font-weight: 400; font-size: 15px; margin-left: 8px; }
+  .tagline { color: var(--muted); font-size: 13px; margin: 0 0 22px; }
+
+  /* language pills */
+  .langbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+  .langbar button {
+    padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 12.5px;
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font-family: inherit;
+  }
+  .langbar button:hover { color: var(--text); border-color: #3d3d48; }
+  .langbar button.on {
+    background: var(--accent-soft); border-color: var(--accent); color: #c9c9ff;
+  }
+
+  /* pack cards */
   .card {
-    background: #1a1a20; border: 1px solid #2b2b33; border-radius: 12px;
-    padding: 18px 20px; margin-bottom: 16px;
     display: flex; gap: 16px; align-items: center;
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 14px;
+    transition: border-color .15s, transform .15s, background .15s;
+  }
+  .card:hover { border-color: #3d3d48; background: var(--card-hover); transform: translateY(-1px); }
+  .avatar {
+    width: 52px; height: 52px; border-radius: 12px; flex: none;
+    display: grid; place-items: center;
+    font-size: 22px; font-weight: 600; color: #fff;
   }
   .card .info { flex: 1; min-width: 0; }
-  .card h2 { font-size: 16px; margin: 0 0 2px; }
-  .card .meta { color: #9a9aa2; font-size: 12px; }
-  .card .caps { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .card h2 { font-size: 16px; margin: 0 0 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ver {
+    font-size: 11px; font-weight: 500; padding: 1px 9px; border-radius: 20px;
+    background: var(--accent-soft); color: #c9c9ff;
+  }
+  .card .meta { color: var(--muted); font-size: 12px; }
+  .caps { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
   .cap {
     font-size: 11px; padding: 2px 10px; border-radius: 20px;
     background: #23232b; border: 1px solid #33333d; color: #b8b8c0;
   }
+  .actions { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
   a.btn {
-    display: inline-block; padding: 9px 18px; border-radius: 20px; text-decoration: none;
-    background: #5b5be0; color: #fff; font-size: 13px; white-space: nowrap;
+    display: inline-block; padding: 9px 20px; border-radius: 20px; text-decoration: none;
+    background: var(--accent); color: #fff; font-size: 13px; white-space: nowrap;
   }
   a.btn:hover { background: #6c6ce8; }
-  a.repo { color: #7f7ffa; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 6px; }
+  a.repo { color: #8f8fe8; font-size: 12px; text-decoration: none; }
+  a.repo:hover { text-decoration: underline; }
+
+  /* note + footer */
   .note {
-    background: #16161c; border: 1px solid #2b2b33; border-radius: 12px;
-    padding: 14px 18px; color: #9a9aa2; font-size: 13px;
+    background: #15151b; border: 1px solid var(--border); border-radius: 14px;
+    padding: 15px 18px; color: var(--muted); font-size: 13px; margin-top: 26px;
   }
   .note code { background: #23232b; padding: 1px 6px; border-radius: 4px; color: #c9c9ff; }
+  footer { color: var(--faint); font-size: 12px; margin-top: 26px; }
+  footer a { color: var(--faint); }
   #err { color: #e07070; }
+  @media (max-width: 560px) {
+    .card { flex-direction: column; align-items: flex-start; }
+    .actions { flex-direction: row; width: 100%; justify-content: space-between; align-items: center; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Arietta <span>Game Packs</span></h1>
-    <p>第三方启动器 Arietta 的游戏包浏览与下载索引 · <a href="https://github.com/PaperKito/Arietta" style="color:#7f7ffa;text-decoration:none">GitHub</a></p>
+    <div class="logo">A</div>
+    <h1>Arietta <small data-i18n="title">Game Packs</small></h1>
   </header>
+  <p class="tagline" data-i18n="tagline"></p>
+  <div class="langbar" id="langbar"></div>
+  <div id="count" class="tagline" style="margin-bottom:14px"></div>
   <div id="packs"></div>
   <p id="err"></p>
-  <div class="note">
-    安装方式：在 Arietta 中打开 <code>设置 → 游戏包</code>，宿主会读取本索引，
-    校验 sha256 与作者签名后自动安装/更新。也可在下方直接下载 zip 手动解压到
-    <code>数据目录/games/&lt;包id&gt;/</code>。
-  </div>
+  <div class="note" data-i18n="note"></div>
+  <footer>
+    <span data-i18n="footer"></span>
+    <a href="./index.json">index.json</a> ·
+    <a href="https://github.com/PaperKito/Arietta" target="_blank" rel="noopener">GitHub</a>
+  </footer>
 </div>
+
 <script>
-const CAP_LABELS = { launch: "启动", gacha: "抽卡", settings: "设置", community: "社区", communityAutoSign: "自动签到", accounts: "账号", update: "更新" };
+const I18N = {
+  "en": {
+    title: "Game Packs",
+    tagline: "Extend Arietta with community-built game packs — install, update, play.",
+    download: "Download zip",
+    source: "Source",
+    author: "Author",
+    packs: (n) => `${n} pack${n === 1 ? "" : "s"} available`,
+    note: `Install from inside Arietta: open <code>Settings → Game packs</code> — it reads this index and verifies every pack's sha256 and author signature before installing. You can also download the zip here and extract it to <code>&lt;data folder&gt;/games/&lt;pack id&gt;/</code> yourself.`,
+    footer: "Static index hosted on GitHub Pages · metadata only, packs live in their own repos' Releases.",
+    err: "Failed to load index: ",
+  },
+  "zh-Hans": {
+    title: "游戏包",
+    tagline: "用社区制作的游戏包扩展 Arietta —— 在线安装、一键更新。",
+    download: "下载 zip",
+    source: "源码",
+    author: "作者",
+    packs: (n) => `共 ${n} 个游戏包`,
+    note: `在 Arietta 内安装：打开 <code>设置 → 游戏包</code>，宿主会读取本索引，校验每个包的 sha256 与作者签名后才安装。也可以在这里直接下载 zip，手动解压到 <code>&lt;数据目录&gt;/games/&lt;包 id&gt;/</code>。`,
+    footer: "静态索引由 GitHub Pages 托管 · 只存元数据，包文件在各自仓库的 Release。",
+    err: "索引加载失败：",
+  },
+  "zh-Hant": {
+    title: "遊戲包",
+    tagline: "用社群製作的遊戲包擴充 Arietta —— 線上安裝、一鍵更新。",
+    download: "下載 zip",
+    source: "原始碼",
+    author: "作者",
+    packs: (n) => `共 ${n} 個遊戲包`,
+    note: `在 Arietta 內安裝：開啟 <code>設定 → 遊戲包</code>，宿主會讀取本索引，校驗每個包的 sha256 與作者簽章後才安裝。也可以在這裡直接下載 zip，手動解壓到 <code>&lt;資料目錄&gt;/games/&lt;包 id&gt;/</code>。`,
+    footer: "靜態索引由 GitHub Pages 託管 · 只存元數據，包檔案在各自倉庫的 Release。",
+    err: "索引載入失敗：",
+  },
+  "ja": {
+    title: "ゲームパック",
+    tagline: "コミュニティ製のゲームパックで Arietta を拡張 —— オンラインインストール、ワンクリック更新。",
+    download: "zip をダウンロード",
+    source: "ソース",
+    author: "作者",
+    packs: (n) => `全 ${n} 個のパック`,
+    note: `Arietta からのインストール：<code>設定 → ゲームパック</code> を開くと、ホストがこのインデックスを読み込み、各パックの sha256 と作者の署名を検証してからインストールします。ここで zip をダウンロードし、<code>&lt;データフォルダ&gt;/games/&lt;パック ID&gt;/</code> に手動で展開することもできます。`,
+    footer: "静的インデックスは GitHub Pages でホスト · メタデータのみ、パック本体は各リポジトリの Release。",
+    err: "インデックスの読み込みに失敗：",
+  },
+  "ko": {
+    title: "게임 팩",
+    tagline: "커뮤니티가 만든 게임 팩으로 Arietta를 확장하세요 — 온라인 설치, 원클릭 업데이트.",
+    download: "zip 다운로드",
+    source: "소스",
+    author: "제작자",
+    packs: (n) => `총 ${n}개의 팩`,
+    note: `Arietta에서 설치: <code>설정 → 게임 팩</code>을 열면 호스트가 이 색인을 읽고 각 팩의 sha256과 작성자 서명을 검증한 뒤 설치합니다. 여기서 zip을 내려받아 <code>&lt;데이터 폴더&gt;/games/&lt;팩 id&gt;/</code>에 직접 압축 해제할 수도 있습니다.`,
+    footer: "정적 색인은 GitHub Pages에서 호스팅 · 메타데이터만 저장, 팩 파일은 각 저장소의 Release.",
+    err: "색인 로드 실패: ",
+  },
+};
+
+const LANGS = [["en", "English"], ["zh-Hans", "简体中文"], ["zh-Hant", "繁體中文"], ["ja", "日本語"], ["ko", "한국어"]];
+const CAP_LABELS = {
+  launch:            { en: "Launch", "zh-Hans": "启动", "zh-Hant": "啟動", ja: "起動", ko: "실행" },
+  gacha:             { en: "Gacha log", "zh-Hans": "抽卡", "zh-Hant": "抽卡", ja: "ガチャ", ko: "가챠" },
+  settings:          { en: "Settings", "zh-Hans": "设置", "zh-Hant": "設定", ja: "設定", ko: "설정" },
+  community:         { en: "Community", "zh-Hans": "社区", "zh-Hant": "社區", ja: "コミュニティ", ko: "커뮤니티" },
+  communityAutoSign: { en: "Auto sign-in", "zh-Hans": "自动签到", "zh-Hant": "自動簽到", ja: "自動チェックイン", ko: "자동 출석" },
+  accounts:          { en: "Accounts", "zh-Hans": "账号", "zh-Hant": "帳號", ja: "アカウント", ko: "계정" },
+  update:            { en: "Update", "zh-Hans": "更新", "zh-Hant": "更新", ja: "更新", ko: "업데이트" },
+};
+
+// Default English; the user's choice persists in localStorage.
+let lang = localStorage.getItem("packs-lang") || "en";
+if (!I18N[lang]) lang = "en";
+let indexData = null;
+
+const T = (key) => I18N[lang][key] ?? I18N.en[key];
+
 function pickName(names) {
-  const langs = (navigator.languages || [navigator.language]);
-  for (const l of langs) for (const k of Object.keys(names))
-    if (k.toLowerCase() === l.toLowerCase()) return names[k];
-  return names["zh-Hans"] || names["en"] || Object.values(names)[0] || "";
+  if (!names) return "";
+  return names[lang] || names.en || names["zh-Hans"] || Object.values(names)[0] || "";
 }
-fetch("./index.json").then(r => r.json()).then(idx => {
-  document.getElementById("packs").innerHTML = idx.packs.map(p => `
+
+// Deterministic gradient per pack id, so letter avatars aren't all the same color.
+function hueOf(id) {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return h;
+}
+
+function capChip(key) {
+  const labels = CAP_LABELS[key];
+  return `<span class="cap">${(labels && (labels[lang] || labels.en)) || key}</span>`;
+}
+
+function renderLangbar() {
+  document.getElementById("langbar").innerHTML = LANGS.map(([code, label]) =>
+    `<button data-lang="${code}" class="${code === lang ? "on" : ""}">${label}</button>`).join("");
+  document.getElementById("langbar").querySelectorAll("button").forEach(b => b.onclick = () => {
+    lang = b.dataset.lang;
+    localStorage.setItem("packs-lang", lang);
+    renderAll();
+  });
+}
+
+function renderAll() {
+  document.documentElement.lang = lang;
+  document.title = `Arietta · ${T("title")}`;
+  renderLangbar();
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = T(el.dataset.i18n); });
+  if (!indexData) return;
+
+  const packs = indexData.packs || [];
+  document.getElementById("count").textContent = T("packs")(packs.length);
+  document.getElementById("packs").innerHTML = packs.map(p => {
+    const name = pickName(p.names) || p.id;
+    const hue = hueOf(p.id);
+    const chips = Object.entries(p.capabilities || {})
+      .filter(([, v]) => v)
+      .map(([k]) => capChip(k))
+      .join("");
+    return `
     <div class="card">
+      <div class="avatar" style="background:linear-gradient(135deg, hsl(${hue} 45% 42%), hsl(${(hue + 40) % 360} 45% 30%))">${(name[0] || "?").toUpperCase()}</div>
       <div class="info">
-        <h2>${pickName(p.names || {})} <small style="color:#9a9aa2;font-weight:400">v${p.version}</small></h2>
-        <div class="meta">作者 ${p.author} · API v${p.api}</div>
-        <div class="caps">${Object.entries(p.capabilities || {}).filter(([, v]) => v).map(([k]) => `<span class="cap">${CAP_LABELS[k] || k}</span>`).join("")}</div>
-        ${p.repo ? `<a class="repo" href="${p.repo}" target="_blank" rel="noopener">源码仓库 ↗</a>` : ""}
+        <h2>${name} <span class="ver">v${p.version}</span></h2>
+        <div class="meta">${T("author")}: ${p.author || "-"}</div>
+        <div class="caps">${chips}</div>
       </div>
-      <a class="btn" href="${p.download}" rel="noopener">下载 zip</a>
-    </div>`).join("");
-}).catch(e => { document.getElementById("err").textContent = "索引加载失败: " + e; });
+      <div class="actions">
+        <a class="btn" href="${p.download}" rel="noopener">${T("download")}</a>
+        ${p.repo ? `<a class="repo" href="${p.repo}" target="_blank" rel="noopener">${T("source")} ↗</a>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+fetch("./index.json")
+  .then(r => r.json())
+  .then(data => { indexData = data; renderAll(); })
+  .catch(e => { document.getElementById("err").textContent = T("err") + e; });
+
+renderAll();
 </script>
 </body>
 </html>
