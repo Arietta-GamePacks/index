@@ -57,6 +57,10 @@
     display: grid; place-items: center;
     font-size: 22px; font-weight: 600; color: #fff;
   }
+  .avatar-img {
+    width: 52px; height: 52px; border-radius: 12px; flex: none;
+    object-fit: cover; background: #23232b;
+  }
   .card .info { flex: 1; min-width: 0; }
   .card h2 { font-size: 16px; margin: 0 0 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .ver {
@@ -231,9 +235,12 @@ function renderAll() {
       .filter(([, v]) => v)
       .map(([k]) => capChip(k))
       .join("");
+    const avatar = p.icon
+      ? `<img class="avatar-img" src="${p.icon}" alt="" loading="lazy">`
+      : `<div class="avatar" style="background:linear-gradient(135deg, hsl(${hue} 45% 42%), hsl(${(hue + 40) % 360} 45% 30%))">${(name[0] || "?").toUpperCase()}</div>`;
     return `
     <div class="card">
-      <div class="avatar" style="background:linear-gradient(135deg, hsl(${hue} 45% 42%), hsl(${(hue + 40) % 360} 45% 30%))">${(name[0] || "?").toUpperCase()}</div>
+      ${avatar}
       <div class="info">
         <h2>${name} <span class="ver">v${p.version}</span></h2>
         <div class="meta">${T("author")}: ${p.author || "-"}</div>

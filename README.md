@@ -19,6 +19,7 @@ https://arietta-gamepacks.github.io/index/index.json
 | `packs[].id` | Pack id, lowercase ascii/digits/hyphens; equals the install folder name |
 | `packs[].names` | UI language tag → title |
 | `packs[].author` | Author name (must match `signature.json` inside the pack) |
+| `packs[].icon` | Optional pack icon path, relative to the index root (hosted in this repo's `icons/`); the landing page shows it instead of a letter avatar |
 | `packs[].publicKey` | Author public key (SPKI base64). The host verifies the zip's `signature.json` against it and refuses mismatches |
 | `packs[].version` | Pack version |
 | `packs[].api` | Provider protocol version |

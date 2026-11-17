@@ -19,6 +19,7 @@ https://arietta-gamepacks.github.io/index/index.json
 | `packs[].id` | 包 id，小写字母/数字/连字符，等于安装目录名 |
 | `packs[].names` | 界面语言 tag → 标题 |
 | `packs[].author` | 作者名（与包内 `signature.json` 的 `author` 一致） |
+| `packs[].icon` | 可选，包图标路径（相对索引根，图标本体放本仓库 `icons/`）；落地页有它就不显示字母占位 |
 | `packs[].publicKey` | 作者公钥（SPKI base64），宿主用于校验 zip 内 `signature.json`，对不上即拒绝安装 |
 | `packs[].version` | 包版本 |
 | `packs[].api` | provider 协议版本 |
