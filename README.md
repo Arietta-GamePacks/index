@@ -1,33 +1,36 @@
+English | [简体中文](./README.zh.md)
+
 # Arietta Game Pack Index
 
-[Arietta](https://github.com/PaperKito/Arietta)「游戏包」的默认浏览与下载索引，GitHub Pages 托管：
+The default browse & download index for [Arietta](https://github.com/PaperKito/Arietta) game packs, hosted on GitHub Pages:
 
 ```
 https://arietta-gamepacks.github.io/index/index.json
 ```
 
-宿主侧「浏览并下载」读这个地址；索引地址在宿主设置里可配置，允许自建多源。索引只存元数据，不存游戏资源；包 zip 一律放各仓库的 GitHub Release（免登录直链下载）。
+- **For users**: the landing page at <https://arietta-gamepacks.github.io/index/> lists every published pack with a direct zip download. Inside Arietta (`Settings → Game packs`), the same index powers the pack list — install, update — automatically.
+- **For the host**: Arietta reads `index.json` (the address is user-configurable, so self-hosted mirrors work). The index stores metadata only, never game assets; pack zips always live in each pack repo's GitHub Release (anonymous direct-link downloads).
 
-## index.json 字段
+## index.json fields
 
-| 字段 | 说明 |
+| Field | Meaning |
 | --- | --- |
-| `version` | 索引格式版本，当前 `1` |
-| `packs[].id` | 包 id，小写字母/数字/连字符，等于安装目录名 |
-| `packs[].names` | 界面语言 tag → 标题 |
-| `packs[].author` | 作者名（与包内 `signature.json` 的 `author` 一致） |
-| `packs[].publicKey` | 作者公钥（SPKI base64），宿主用于校验 zip 内 `signature.json`，对不上即拒绝安装 |
-| `packs[].version` | 包版本 |
-| `packs[].api` | provider 协议版本 |
-| `packs[].capabilities` | 能力声明，与包内 `game.json` 一致 |
-| `packs[].repo` | 包源码仓库 |
-| `packs[].download` | zip 直链（指向 Release 资产） |
-| `packs[].sha256` | zip 的 sha256 |
+| `version` | Index format version, currently `1` |
+| `packs[].id` | Pack id, lowercase ascii/digits/hyphens; equals the install folder name |
+| `packs[].names` | UI language tag → title |
+| `packs[].author` | Author name (must match `signature.json` inside the pack) |
+| `packs[].publicKey` | Author public key (SPKI base64). The host verifies the zip's `signature.json` against it and refuses mismatches |
+| `packs[].version` | Pack version |
+| `packs[].api` | Provider protocol version |
+| `packs[].capabilities` | Capability flags, identical to the pack's `game.json` |
+| `packs[].repo` | Pack source repository |
+| `packs[].download` | Zip direct link (points to a Release asset) |
+| `packs[].sha256` | sha256 of the zip |
 
-## 提交你的包
+## Submitting your pack
 
-1. 按《游戏包开发规范》组织包目录，用 `tools/GamePackSign` 签名（`signature.json` 必须在 zip 内）；
-2. 包目录 zip 后（`<id>-<version>.zip`，文件在 zip 根，含空目录占位文件）传到你自己的 GitHub Release；
-3. PR 修改本仓库 `index.json`：填上表字段，`publicKey` 换成你自己的。
+1. Organize your pack folder per the *Game Pack Development Guide* and sign it with `tools/GamePackSign` (`signature.json` must be inside the zip);
+2. Zip the pack folder (`<id>-<version>.zip`, files at zip root, keep empty-directory placeholders) and upload it to your own GitHub Release;
+3. Open a PR editing `index.json` in this repo with the fields above, using your own `publicKey`.
 
-校验链：索引下发 `publicKey` → 下载 zip → 校验 `sha256` → 解包校验 `signature.json` 签名。任何一环对不上，宿主拒绝安装。
+Verification chain: the index hands out `publicKey` → zip is downloaded → `sha256` checked → `signature.json` verified against that key. Any mismatch and the host refuses to install.
