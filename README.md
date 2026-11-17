@@ -33,4 +33,13 @@ https://arietta-gamepacks.github.io/index/index.json
 2. Zip the pack folder (`<id>-<version>.zip`, files at zip root, keep empty-directory placeholders) and upload it to your own GitHub Release;
 3. Open a PR editing `index.json` in this repo with the fields above, using your own `publicKey`.
 
-Verification chain: the index hands out `publicKey` → zip is downloaded → `sha256` checked → `signature.json` verified against that key. Any mismatch and the host refuses to install.
+## Updating a published pack
+
+**No PR needed.** Push a new Release to your own repo (tag `v<version>`, zip asset) — the host resolves
+`releases/latest` at check time and takes the zip asset with its GitHub-computed sha256 digest.
+The index's own `version`/`download`/`sha256` are the fallback for API failures, rate limits and
+non-GitHub hosts. A PR is only required to onboard a pack, or to change its author/public key.
+
+Verification chain: the index pins the author's `publicKey` (identity) → zip is downloaded
+(sha256 cross-checked against the GitHub digest when available) → `signature.json` verified against
+that pinned key. Any mismatch and the host refuses to install.

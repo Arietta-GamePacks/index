@@ -33,4 +33,11 @@ https://arietta-gamepacks.github.io/index/index.json
 2. 包目录 zip 后（`<id>-<version>.zip`，文件在 zip 根，含空目录占位文件）传到你自己的 GitHub Release；
 3. PR 修改本仓库 `index.json`：填上表字段，`publicKey` 换成你自己的。
 
-校验链：索引下发 `publicKey` → 下载 zip → 校验 `sha256` → 解包校验 `signature.json` 签名。任何一环对不上，宿主拒绝安装。
+## 更新已上架的包
+
+**不需要 PR。** 在你自己仓库发新 Release（tag `v<版本>`，挂 zip 资产）即可——宿主检查更新时会实时读
+`releases/latest`，取 zip 资产及 GitHub 计算的 sha256 digest。index.json 里的 `version`/`download`/`sha256`
+只是 API 失败、限流或非 GitHub 托管时的回退。只有新包上架、换作者/换公钥才需要 PR。
+
+校验链：索引钉住作者的 `publicKey`（身份锚点）→ 下载 zip（有 GitHub digest 时交叉校验 sha256）→ 用钉住的
+公钥验 `signature.json`。任何一环对不上，宿主拒绝安装。
