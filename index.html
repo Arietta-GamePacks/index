@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arietta · 游戏包索引</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 16px; background: #101014; color: #e8e8ea;
+    font: 14px/1.6 "Segoe UI", system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: .5px; }
+  header h1 span { color: #7f7ffa; }
+  header p { margin: 0 0 32px; color: #9a9aa2; font-size: 13px; }
+  .card {
+    background: #1a1a20; border: 1px solid #2b2b33; border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 16px;
+    display: flex; gap: 16px; align-items: center;
+  }
+  .card .info { flex: 1; min-width: 0; }
+  .card h2 { font-size: 16px; margin: 0 0 2px; }
+  .card .meta { color: #9a9aa2; font-size: 12px; }
+  .card .caps { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .cap {
+    font-size: 11px; padding: 2px 10px; border-radius: 20px;
+    background: #23232b; border: 1px solid #33333d; color: #b8b8c0;
+  }
+  a.btn {
+    display: inline-block; padding: 9px 18px; border-radius: 20px; text-decoration: none;
+    background: #5b5be0; color: #fff; font-size: 13px; white-space: nowrap;
+  }
+  a.btn:hover { background: #6c6ce8; }
+  a.repo { color: #7f7ffa; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 6px; }
+  .note {
+    background: #16161c; border: 1px solid #2b2b33; border-radius: 12px;
+    padding: 14px 18px; color: #9a9aa2; font-size: 13px;
+  }
+  .note code { background: #23232b; padding: 1px 6px; border-radius: 4px; color: #c9c9ff; }
+  #err { color: #e07070; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Arietta <span>Game Packs</span></h1>
+    <p>第三方启动器 Arietta 的游戏包浏览与下载索引 · <a href="https://github.com/PaperKito/Arietta" style="color:#7f7ffa;text-decoration:none">GitHub</a></p>
+  </header>
+  <div id="packs"></div>
+  <p id="err"></p>
+  <div class="note">
+    安装方式：在 Arietta 中打开 <code>设置 → 游戏包</code>，宿主会读取本索引，
+    校验 sha256 与作者签名后自动安装/更新。也可在下方直接下载 zip 手动解压到
+    <code>数据目录/games/&lt;包id&gt;/</code>。
+  </div>
+</div>
+<script>
+const CAP_LABELS = { launch: "启动", gacha: "抽卡", settings: "设置", community: "社区", communityAutoSign: "自动签到", accounts: "账号", update: "更新" };
+function pickName(names) {
+  const langs = (navigator.languages || [navigator.language]);
+  for (const l of langs) for (const k of Object.keys(names))
+    if (k.toLowerCase() === l.toLowerCase()) return names[k];
+  return names["zh-Hans"] || names["en"] || Object.values(names)[0] || "";
+}
+fetch("./index.json").then(r => r.json()).then(idx => {
+  document.getElementById("packs").innerHTML = idx.packs.map(p => `
+    <div class="card">
+      <div class="info">
+        <h2>${pickName(p.names || {})} <small style="color:#9a9aa2;font-weight:400">v${p.version}</small></h2>
+        <div class="meta">作者 ${p.author} · API v${p.api}</div>
+        <div class="caps">${Object.entries(p.capabilities || {}).filter(([, v]) => v).map(([k]) => `<span class="cap">${CAP_LABELS[k] || k}</span>`).join("")}</div>
+        ${p.repo ? `<a class="repo" href="${p.repo}" target="_blank" rel="noopener">源码仓库 ↗</a>` : ""}
+      </div>
+      <a class="btn" href="${p.download}" rel="noopener">下载 zip</a>
+    </div>`).join("");
+}).catch(e => { document.getElementById("err").textContent = "索引加载失败: " + e; });
+</script>
+</body>
+</html>
